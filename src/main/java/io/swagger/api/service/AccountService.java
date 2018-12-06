@@ -44,18 +44,18 @@ public class AccountService {
   }
 
   public Account getAccount(Long accountId) {
-    AccountEntity entity = accountRepository.findOne(accountId);
+    AccountEntity entity = accountRepository.findById(accountId).orElse(null);
     return entity == null ? null : modelMapper.map(entity,Account.class);
   }
 
   @Transactional
   public Account saveOrUpdate(Account account) {
     AccountEntity entity = modelMapper.map(account, AccountEntity.class);
-    CurrencyEntity currencyEntity = currencyRepository.findOne(account.getCurrencyId());
+    CurrencyEntity currencyEntity = currencyRepository.findById(account.getCurrencyId()).orElse(null);
     if(currencyEntity == null) {
       throw new IllegalArgumentException("currency does not exist");
     }
-    entity.setCurrencyEntity(currencyRepository.findOne(account.getCurrencyId()));
+    entity.setCurrencyEntity(currencyEntity);
     return modelMapper.map(accountRepository.save(entity),Account.class);
   }
 }
