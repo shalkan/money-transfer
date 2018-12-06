@@ -24,8 +24,8 @@ public class Currency   {
   private String name = null;
 
   @JsonProperty("ratio")
+  @Positive
   @NotNull
-  @PositiveOrZero
   private BigDecimal ratio = null;
 
   public Currency id(Long id) {

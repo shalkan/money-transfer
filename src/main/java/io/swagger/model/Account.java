@@ -21,6 +21,7 @@ public class Account   {
   private Long id = null;
 
   @JsonProperty("amount")
+  @PositiveOrZero
   private BigDecimal amount = null;
 
   @JsonProperty("currencyId")

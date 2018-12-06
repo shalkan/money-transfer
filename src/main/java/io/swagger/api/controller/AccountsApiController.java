@@ -1,6 +1,7 @@
 package io.swagger.api.controller;
 
 import io.swagger.api.service.AccountService;
+import io.swagger.api.service.TransferService;
 import io.swagger.model.Account;
 import io.swagger.model.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,51 +18,61 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-06T19:09:28.930Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen",
+                            date = "2018-12-06T19:09:28.930Z[GMT]")
 
 @Controller
 public class AccountsApiController implements AccountsApi {
 
-    private static final Logger log = LoggerFactory.getLogger(AccountsApiController.class);
+  private static final Logger log = LoggerFactory.getLogger(AccountsApiController.class);
 
-    private final ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper;
 
-    private final HttpServletRequest request;
+  private final HttpServletRequest request;
 
-    private final AccountService accountService;
+  private final AccountService accountService;
 
-    @org.springframework.beans.factory.annotation.Autowired
-    public AccountsApiController(ObjectMapper objectMapper, HttpServletRequest request, AccountService accountService) {
-        this.objectMapper = objectMapper;
-        this.request = request;
-        this.accountService = accountService;
+  private final TransferService transferService;
+
+  @org.springframework.beans.factory.annotation.Autowired
+  public AccountsApiController(ObjectMapper objectMapper, HttpServletRequest request,
+                               AccountService accountService, TransferService transferService) {
+    this.objectMapper = objectMapper;
+    this.request = request;
+    this.accountService = accountService;
+    this.transferService = transferService;
+  }
+
+  public ResponseEntity<Account> accountsAccountIdGet(
+      @ApiParam(value = "ID of account to return", required = true) @PathVariable("accountId")
+          Long accountId) {
+    String accept = request.getHeader("Accept");
+    return new ResponseEntity<Account>(accountService.getAccount(accountId), HttpStatus.OK);
+  }
+
+  public ResponseEntity<List<Transaction>> accountsAccountIdTransfersGet(
+      @ApiParam(value = "account ID", required = true) @PathVariable("accountId") Long accountId) {
+    String accept = request.getHeader("Accept");
+    return new ResponseEntity<List<Transaction>>(transferService.getTransactions(accountId),
+        HttpStatus.OK);
+  }
+
+  public ResponseEntity<List<Account>> accountsGet() {
+    String accept = request.getHeader("Accept");
+    return new ResponseEntity<List<Account>>(accountService.getAccounts(), HttpStatus.OK);
+  }
+
+  public ResponseEntity<Account> accountsPost(
+      @ApiParam(value = "") @Valid @RequestBody Account body) {
+    String accept = request.getHeader("Accept");
+    if (body.getId() != null) {
+      throw new IllegalArgumentException("Id must not be set");
     }
+    if (body.getCurrencyId() == null) {
 
-    public ResponseEntity<Account> accountsAccountIdGet(@ApiParam(value = "ID of account to return",required=true) @PathVariable("accountId") Long accountId) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Account>(accountService.getAccount(accountId), HttpStatus.OK);
+      throw new IllegalArgumentException("currency required");
     }
-
-    public ResponseEntity<List<Transaction>> accountsAccountIdTransfersGet(@ApiParam(value = "account ID",required=true) @PathVariable("accountId") Long accountId) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<List<Transaction>>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    public ResponseEntity<List<Account>> accountsGet() {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<List<Account>>(accountService.getAccounts(), HttpStatus.OK);
-    }
-
-    public ResponseEntity<Account> accountsPost(@ApiParam(value = ""  )  @Valid @RequestBody Account body) {
-        String accept = request.getHeader("Accept");
-        if (body.getId() != null) {
-            throw new IllegalArgumentException("Id must not be set");
-        }
-        if(body.getCurrencyId() == null) {
-
-            throw new IllegalArgumentException("currency required");
-        }
-        return new ResponseEntity<Account>(accountService.saveOrUpdate(body), HttpStatus.OK);
-    }
+    return new ResponseEntity<Account>(accountService.save(body), HttpStatus.OK);
+  }
 
 }

@@ -18,12 +18,15 @@ import javax.validation.constraints.*;
 
 public class Transfer   {
   @JsonProperty("sourceAccId")
+  @NotNull
   private Long sourceAccId = null;
 
   @JsonProperty("destAccId")
+  @NotNull
   private Long destAccId = null;
 
   @JsonProperty("amount")
+  @Positive
   private BigDecimal amount = null;
 
   public Transfer sourceAccId(Long sourceAccId) {

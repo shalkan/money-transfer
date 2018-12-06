@@ -28,6 +28,9 @@ public class AccountService {
   private CurrencyRepository currencyRepository;
 
   @Autowired
+  private TransferService transferService;
+
+  @Autowired
   private ModelMapper modelMapper;
 
   @Transactional
@@ -45,17 +48,36 @@ public class AccountService {
 
   public Account getAccount(Long accountId) {
     AccountEntity entity = accountRepository.findById(accountId).orElse(null);
-    return entity == null ? null : modelMapper.map(entity,Account.class);
+    return entity == null ? null : modelMapper.map(entity, Account.class);
   }
 
   @Transactional
-  public Account saveOrUpdate(Account account) {
+  public Account save(Account account) {
     AccountEntity entity = modelMapper.map(account, AccountEntity.class);
     CurrencyEntity currencyEntity = currencyRepository.findById(account.getCurrencyId()).orElse(null);
     if(currencyEntity == null) {
-      throw new IllegalArgumentException("currency does not exist");
+      throw new IllegalArgumentException("Currency does not exist");
     }
     entity.setCurrencyEntity(currencyEntity);
-    return modelMapper.map(accountRepository.save(entity),Account.class);
+    Account savedAccount = modelMapper.map(accountRepository.save(entity), Account.class);
+    transferService.createIncomeTransaction(entity);
+    return savedAccount;
+  }
+
+  @Transactional
+  public Account update(Account account) {
+    AccountEntity entity = accountRepository.findById(account.getId()).orElse(null);
+    if (entity == null) {
+      throw new IllegalArgumentException("Account does not exist");
+    }
+    if (entity.getCurrencyId().equals(account.getCurrencyId())) {
+      throw new UnsupportedOperationException("Account currency can not be changed");
+    }
+    CurrencyEntity currencyEntity = currencyRepository.findById(account.getCurrencyId()).orElse(null);
+    if(currencyEntity == null) {
+      throw new IllegalArgumentException("Currency does not exist");
+    }
+    entity.setCurrencyEntity(currencyEntity);
+    return modelMapper.map(accountRepository.save(entity), Account.class);
   }
 }
