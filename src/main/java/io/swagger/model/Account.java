@@ -1,6 +1,10 @@
 package io.swagger.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
@@ -18,19 +22,16 @@ import javax.validation.constraints.*;
 
 public class Account   {
   @JsonProperty("id")
-  private Long id = null;
+  private String id = null;
 
   @JsonProperty("amount")
   @PositiveOrZero
   private BigDecimal amount = null;
 
-  @JsonProperty("currencyId")
-  private Long currencyId = null;
+  @JsonIgnore
+  private List<Transaction> transactionList = new ArrayList();
 
-  @JsonProperty("currencyName")
-  private String currencyName = null;
-
-  public Account id(Long id) {
+  public Account id(String id) {
     this.id = id;
     return this;
   }
@@ -42,11 +43,11 @@ public class Account   {
   @ApiModelProperty(value = "")
 
 
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -71,46 +72,13 @@ public class Account   {
     this.amount = amount;
   }
 
-  public Account currencyId(Long currencyId) {
-    this.currencyId = currencyId;
-    return this;
+  public List<Transaction> getTransactionList() {
+    return transactionList;
   }
 
-  /**
-   * Get currencyId
-   * @return currencyId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Long getCurrencyId() {
-    return currencyId;
+  public void setTransactionList(List<Transaction> transactionList) {
+    this.transactionList = transactionList;
   }
-
-  public void setCurrencyId(Long currencyId) {
-    this.currencyId = currencyId;
-  }
-
-  public Account currencyName(String currencyName) {
-    this.currencyName = currencyName;
-    return this;
-  }
-
-  /**
-   * Get currencyName
-   * @return currencyName
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getCurrencyName() {
-    return currencyName;
-  }
-
-  public void setCurrencyName(String currencyName) {
-    this.currencyName = currencyName;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -122,14 +90,12 @@ public class Account   {
     }
     Account account = (Account) o;
     return Objects.equals(this.id, account.id) &&
-        Objects.equals(this.amount, account.amount) &&
-        Objects.equals(this.currencyId, account.currencyId) &&
-        Objects.equals(this.currencyName, account.currencyName);
+        Objects.equals(this.amount, account.amount);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, amount, currencyId, currencyName);
+    return id.hashCode();
   }
 
   @Override
@@ -139,8 +105,6 @@ public class Account   {
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
-    sb.append("    currencyId: ").append(toIndentedString(currencyId)).append("\n");
-    sb.append("    currencyName: ").append(toIndentedString(currencyName)).append("\n");
     sb.append("}");
     return sb.toString();
   }

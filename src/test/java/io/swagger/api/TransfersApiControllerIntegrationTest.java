@@ -41,15 +41,4 @@ public class TransfersApiControllerIntegrationTest {
     }
   }
 
-  @Test
-  public void transfersTransferIdGetTest() throws Exception {
-    Long transferId = 789L;
-    try {
-      api.transfersTransferIdGet(transferId);
-    }
-    catch (Exception e) {
-      assertTrue(e instanceof IllegalArgumentException);
-    }
-  }
-
 }

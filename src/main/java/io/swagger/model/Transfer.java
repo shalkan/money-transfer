@@ -2,8 +2,6 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
@@ -19,17 +17,17 @@ import javax.validation.constraints.*;
 public class Transfer   {
   @JsonProperty("sourceAccId")
   @NotNull
-  private Long sourceAccId = null;
+  private String sourceAccId = null;
 
   @JsonProperty("destAccId")
   @NotNull
-  private Long destAccId = null;
+  private String destAccId = null;
 
   @JsonProperty("amount")
   @Positive
   private BigDecimal amount = null;
 
-  public Transfer sourceAccId(Long sourceAccId) {
+  public Transfer sourceAccId(String sourceAccId) {
     this.sourceAccId = sourceAccId;
     return this;
   }
@@ -41,15 +39,15 @@ public class Transfer   {
   @ApiModelProperty(value = "")
 
 
-  public Long getSourceAccId() {
+  public String getSourceAccId() {
     return sourceAccId;
   }
 
-  public void setSourceAccId(Long sourceAccId) {
+  public void setSourceAccId(String sourceAccId) {
     this.sourceAccId = sourceAccId;
   }
 
-  public Transfer destAccId(Long destAccId) {
+  public Transfer destAccId(String destAccId) {
     this.destAccId = destAccId;
     return this;
   }
@@ -61,11 +59,11 @@ public class Transfer   {
   @ApiModelProperty(value = "")
 
 
-  public Long getDestAccId() {
+  public String getDestAccId() {
     return destAccId;
   }
 
-  public void setDestAccId(Long destAccId) {
+  public void setDestAccId(String destAccId) {
     this.destAccId = destAccId;
   }
 

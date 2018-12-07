@@ -40,12 +40,12 @@ public interface TransfersApi {
     ResponseEntity<Transaction> transfersPost(@ApiParam(value = ""  )  @Valid @RequestBody Transfer body);
 
 
-    @ApiOperation(value = "get specified transfer", nickname = "transfersTransferIdGet", notes = "", response = Transaction.class, tags={ "transfer", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = Transaction.class) })
-    @RequestMapping(value = "/transfers/{transferId}",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<Transaction> transfersTransferIdGet(@ApiParam(value = "id of transfer to return",required=true) @PathVariable("transferId") Long transferId);
+//    @ApiOperation(value = "get specified transfer", nickname = "transfersTransferIdGet", notes = "", response = Transaction.class, tags={ "transfer", })
+//    @ApiResponses(value = {
+//        @ApiResponse(code = 200, message = "OK", response = Transaction.class) })
+//    @RequestMapping(value = "/transfers/{transferId}",
+//        produces = { "application/json" },
+//        method = RequestMethod.GET)
+//    ResponseEntity<Transaction> transfersTransferIdGet(@ApiParam(value = "id of transfer to return",required=true) @PathVariable("transferId") Long transferId);
 
 }

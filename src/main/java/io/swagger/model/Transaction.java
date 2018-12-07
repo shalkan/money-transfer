@@ -1,16 +1,16 @@
 package io.swagger.model;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Transaction
@@ -20,31 +20,35 @@ import javax.validation.constraints.*;
 
 public class Transaction   {
   @JsonProperty("id")
-  private Long id = null;
+  private String id = null;
 
   @JsonProperty("sourceAccId")
-  private Long sourceAccId = null;
+  private String sourceAccId = null;
 
   @JsonProperty("destAccId")
-  private Long destAccId = null;
+  private String destAccId = null;
 
-  @JsonProperty("sourceCurrencyId")
-  private Long sourceCurrencyId = null;
+  @JsonIgnore
+  private Account sourceAcc;
 
-  @JsonProperty("sourceCurrencyName")
-  private String sourceCurrencyName = null;
+  @JsonIgnore
+  private Account destAccount;
 
-  @JsonProperty("destCurrencyId")
-  private Long destCurrencyId = null;
+  public Account getSourceAcc() {
+    return sourceAcc;
+  }
 
-  @JsonProperty("destCurrencyName")
-  private String destCurrencyName = null;
+  public void setSourceAcc(Account sourceAcc) {
+    this.sourceAcc = sourceAcc;
+  }
 
-  @JsonProperty("sourceCurrencyRatio")
-  private BigDecimal sourceCurrencyRatio = null;
+  public Account getDestAccount() {
+    return destAccount;
+  }
 
-  @JsonProperty("destCurrencyRatio")
-  private BigDecimal destCurrencyRatio = null;
+  public void setDestAccount(Account destAccount) {
+    this.destAccount = destAccount;
+  }
 
   /**
    * Transaction Status
@@ -125,7 +129,7 @@ public class Transaction   {
   @JsonProperty("operationType")
   private OperationTypeEnum operationType = null;
 
-  public Transaction id(Long id) {
+  public Transaction id(String id) {
     this.id = id;
     return this;
   }
@@ -137,15 +141,15 @@ public class Transaction   {
   @ApiModelProperty(value = "")
 
 
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(String id) {
     this.id = id;
   }
 
-  public Transaction sourceAccId(Long sourceAccId) {
+  public Transaction sourceAccId(String sourceAccId) {
     this.sourceAccId = sourceAccId;
     return this;
   }
@@ -157,15 +161,15 @@ public class Transaction   {
   @ApiModelProperty(value = "")
 
 
-  public Long getSourceAccId() {
+  public String getSourceAccId() {
     return sourceAccId;
   }
 
-  public void setSourceAccId(Long sourceAccId) {
+  public void setSourceAccId(String sourceAccId) {
     this.sourceAccId = sourceAccId;
   }
 
-  public Transaction destAccId(Long destAccId) {
+  public Transaction destAccId(String destAccId) {
     this.destAccId = destAccId;
     return this;
   }
@@ -177,134 +181,12 @@ public class Transaction   {
   @ApiModelProperty(value = "")
 
 
-  public Long getDestAccId() {
+  public String getDestAccId() {
     return destAccId;
   }
 
-  public void setDestAccId(Long destAccId) {
+  public void setDestAccId(String destAccId) {
     this.destAccId = destAccId;
-  }
-
-  public Transaction sourceCurrencyId(Long sourceCurrencyId) {
-    this.sourceCurrencyId = sourceCurrencyId;
-    return this;
-  }
-
-  /**
-   * Get sourceCurrencyId
-   * @return sourceCurrencyId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Long getSourceCurrencyId() {
-    return sourceCurrencyId;
-  }
-
-  public void setSourceCurrencyId(Long sourceCurrencyId) {
-    this.sourceCurrencyId = sourceCurrencyId;
-  }
-
-  public Transaction sourceCurrencyName(String sourceCurrencyName) {
-    this.sourceCurrencyName = sourceCurrencyName;
-    return this;
-  }
-
-  /**
-   * Get sourceCurrencyName
-   * @return sourceCurrencyName
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getSourceCurrencyName() {
-    return sourceCurrencyName;
-  }
-
-  public void setSourceCurrencyName(String sourceCurrencyName) {
-    this.sourceCurrencyName = sourceCurrencyName;
-  }
-
-  public Transaction destCurrencyId(Long destCurrencyId) {
-    this.destCurrencyId = destCurrencyId;
-    return this;
-  }
-
-  /**
-   * Get destCurrencyId
-   * @return destCurrencyId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Long getDestCurrencyId() {
-    return destCurrencyId;
-  }
-
-  public void setDestCurrencyId(Long destCurrencyId) {
-    this.destCurrencyId = destCurrencyId;
-  }
-
-  public Transaction destCurrencyName(String destCurrencyName) {
-    this.destCurrencyName = destCurrencyName;
-    return this;
-  }
-
-  /**
-   * Get destCurrencyName
-   * @return destCurrencyName
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getDestCurrencyName() {
-    return destCurrencyName;
-  }
-
-  public void setDestCurrencyName(String destCurrencyName) {
-    this.destCurrencyName = destCurrencyName;
-  }
-
-  public Transaction sourceCurrencyRatio(BigDecimal sourceCurrencyRatio) {
-    this.sourceCurrencyRatio = sourceCurrencyRatio;
-    return this;
-  }
-
-  /**
-   * Get sourceCurrencyRatio
-   * @return sourceCurrencyRatio
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public BigDecimal getSourceCurrencyRatio() {
-    return sourceCurrencyRatio;
-  }
-
-  public void setSourceCurrencyRatio(BigDecimal sourceCurrencyRatio) {
-    this.sourceCurrencyRatio = sourceCurrencyRatio;
-  }
-
-  public Transaction destCurrencyRatio(BigDecimal destCurrencyRatio) {
-    this.destCurrencyRatio = destCurrencyRatio;
-    return this;
-  }
-
-  /**
-   * Get destCurrencyRatio
-   * @return destCurrencyRatio
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public BigDecimal getDestCurrencyRatio() {
-    return destCurrencyRatio;
-  }
-
-  public void setDestCurrencyRatio(BigDecimal destCurrencyRatio) {
-    this.destCurrencyRatio = destCurrencyRatio;
   }
 
   public Transaction status(StatusEnum status) {
@@ -423,12 +305,6 @@ public class Transaction   {
     return Objects.equals(this.id, transaction.id) &&
         Objects.equals(this.sourceAccId, transaction.sourceAccId) &&
         Objects.equals(this.destAccId, transaction.destAccId) &&
-        Objects.equals(this.sourceCurrencyId, transaction.sourceCurrencyId) &&
-        Objects.equals(this.sourceCurrencyName, transaction.sourceCurrencyName) &&
-        Objects.equals(this.destCurrencyId, transaction.destCurrencyId) &&
-        Objects.equals(this.destCurrencyName, transaction.destCurrencyName) &&
-        Objects.equals(this.sourceCurrencyRatio, transaction.sourceCurrencyRatio) &&
-        Objects.equals(this.destCurrencyRatio, transaction.destCurrencyRatio) &&
         Objects.equals(this.status, transaction.status) &&
         Objects.equals(this.amount, transaction.amount) &&
         Objects.equals(this.startDate, transaction.startDate) &&
@@ -438,7 +314,7 @@ public class Transaction   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, sourceAccId, destAccId, sourceCurrencyId, sourceCurrencyName, destCurrencyId, destCurrencyName, sourceCurrencyRatio, destCurrencyRatio, status, amount, startDate, endDate, operationType);
+    return Objects.hash(id, sourceAccId, destAccId, amount, startDate, operationType);
   }
 
   @Override
@@ -449,12 +325,6 @@ public class Transaction   {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    sourceAccId: ").append(toIndentedString(sourceAccId)).append("\n");
     sb.append("    destAccId: ").append(toIndentedString(destAccId)).append("\n");
-    sb.append("    sourceCurrencyId: ").append(toIndentedString(sourceCurrencyId)).append("\n");
-    sb.append("    sourceCurrencyName: ").append(toIndentedString(sourceCurrencyName)).append("\n");
-    sb.append("    destCurrencyId: ").append(toIndentedString(destCurrencyId)).append("\n");
-    sb.append("    destCurrencyName: ").append(toIndentedString(destCurrencyName)).append("\n");
-    sb.append("    sourceCurrencyRatio: ").append(toIndentedString(sourceCurrencyRatio)).append("\n");
-    sb.append("    destCurrencyRatio: ").append(toIndentedString(destCurrencyRatio)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen",
@@ -33,7 +34,7 @@ public interface AccountsApi {
                   method = RequestMethod.GET)
   ResponseEntity<Account> accountsAccountIdGet(
       @ApiParam(value = "ID of account to return", required = true) @PathVariable("accountId")
-          Long accountId);
+          String accountId);
 
 
   @ApiOperation(value = "transactions by account", nickname = "accountsAccountIdTransfersGet",
@@ -47,7 +48,7 @@ public interface AccountsApi {
                   produces = {"application/json"},
                   method = RequestMethod.GET)
   ResponseEntity<List<Transaction>> accountsAccountIdTransfersGet(
-      @ApiParam(value = "account ID", required = true) @PathVariable("accountId") Long accountId);
+      @ApiParam(value = "account ID", required = true) @PathVariable("accountId") String accountId);
 
 
   @ApiOperation(value = "get list of existing account", nickname = "accountsGet",
@@ -60,7 +61,7 @@ public interface AccountsApi {
   @RequestMapping(value = "/accounts",
                   produces = {"application/json"},
                   method = RequestMethod.GET)
-  ResponseEntity<List<Account>> accountsGet();
+  ResponseEntity<Collection<Account>> accountsGet();
 
 
   @ApiOperation(value = "create new account", nickname = "accountsPost",

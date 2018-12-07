@@ -1,7 +1,6 @@
 package io.swagger.api.controller;
 
-import io.swagger.api.service.AccountService;
-import io.swagger.api.service.TransferService;
+import io.swagger.api.storage.Storage;
 import io.swagger.model.Account;
 import io.swagger.model.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen",
                             date = "2018-12-06T19:09:28.930Z[GMT]")
@@ -30,36 +31,33 @@ public class AccountsApiController implements AccountsApi {
 
   private final HttpServletRequest request;
 
-  private final AccountService accountService;
-
-  private final TransferService transferService;
+  private final Storage storage;
 
   @org.springframework.beans.factory.annotation.Autowired
   public AccountsApiController(ObjectMapper objectMapper, HttpServletRequest request,
-                               AccountService accountService, TransferService transferService) {
+                               Storage storage) {
     this.objectMapper = objectMapper;
     this.request = request;
-    this.accountService = accountService;
-    this.transferService = transferService;
+    this.storage = storage;
   }
 
   public ResponseEntity<Account> accountsAccountIdGet(
       @ApiParam(value = "ID of account to return", required = true) @PathVariable("accountId")
-          Long accountId) {
+          String accountId) {
     String accept = request.getHeader("Accept");
-    return new ResponseEntity<Account>(accountService.getAccount(accountId), HttpStatus.OK);
+    return new ResponseEntity<Account>(storage.getAccount(accountId), HttpStatus.OK);
   }
 
   public ResponseEntity<List<Transaction>> accountsAccountIdTransfersGet(
-      @ApiParam(value = "account ID", required = true) @PathVariable("accountId") Long accountId) {
+      @ApiParam(value = "account ID", required = true) @PathVariable("accountId") String accountId) {
     String accept = request.getHeader("Accept");
-    return new ResponseEntity<List<Transaction>>(transferService.getTransactions(accountId),
+    return new ResponseEntity<List<Transaction>>(storage.getAccountTransactions(accountId),
         HttpStatus.OK);
   }
 
-  public ResponseEntity<List<Account>> accountsGet() {
+  public ResponseEntity<Collection<Account>> accountsGet() {
     String accept = request.getHeader("Accept");
-    return new ResponseEntity<List<Account>>(accountService.getAccounts(), HttpStatus.OK);
+    return new ResponseEntity<Collection<Account>>(storage.getAccounts(), HttpStatus.OK);
   }
 
   public ResponseEntity<Account> accountsPost(
@@ -68,11 +66,8 @@ public class AccountsApiController implements AccountsApi {
     if (body.getId() != null) {
       throw new IllegalArgumentException("Id must not be set");
     }
-    if (body.getCurrencyId() == null) {
-
-      throw new IllegalArgumentException("currency required");
-    }
-    return new ResponseEntity<Account>(accountService.save(body), HttpStatus.OK);
+    body.setId(UUID.randomUUID().toString());
+    return new ResponseEntity<Account>(storage.addAccount(body), HttpStatus.OK);
   }
 
 }

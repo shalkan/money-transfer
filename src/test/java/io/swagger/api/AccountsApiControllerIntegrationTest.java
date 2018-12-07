@@ -26,21 +26,21 @@ public class AccountsApiControllerIntegrationTest {
 
     @Test
     public void accountsAccountIdGetTest() throws Exception {
-        Long accountId = 789L;
+        String accountId = UUID.randomUUID().toString();
         ResponseEntity<Account> responseEntity = api.accountsAccountIdGet(accountId);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
     public void accountsAccountIdTransfersGetTest() throws Exception {
-        Long accountId = 789L;
+        String accountId = UUID.randomUUID().toString();
         ResponseEntity<List<Transaction>> responseEntity = api.accountsAccountIdTransfersGet(accountId);
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
     public void accountsGetTest() throws Exception {
-        ResponseEntity<List<Account>> responseEntity = api.accountsGet();
+        ResponseEntity<Collection<Account>> responseEntity = api.accountsGet();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
