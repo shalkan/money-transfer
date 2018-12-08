@@ -27,6 +27,7 @@ public class TransactionProcessor implements Runnable {
     while (true) {
       if (!this.queue.isEmpty()) {
         Transaction transaction = this.queue.poll();
+        //here timeout can be added, to display transaction processing lag
         Account sourceAcc = transaction.getSourceAcc();
         Account destAcc = transaction.getDestAccount();
         BigDecimal amount = transaction.getAmount();
