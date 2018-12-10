@@ -2,7 +2,6 @@ package io.swagger.api.storage;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.annotation.PostConstruct;
 
@@ -19,19 +18,19 @@ import org.threeten.bp.OffsetDateTime;
 @Component
 public class Storage {
 
-  private ConcurrentLinkedQueue<Transaction> transactionQueue;
+  private Queue<Transaction> transactionQueue;
 
   private Map<String, Account> accountMap;
   private List<Transaction> transactionList;
 
   @PostConstruct
   private void init() {
-    this.transactionQueue = new ConcurrentLinkedQueue<>();
+    this.transactionQueue = new <Transaction>LinkedList();
     this.accountMap = new HashMap<>();
     this.transactionList = new ArrayList<>();
   }
 
-  public ConcurrentLinkedQueue<Transaction> getTransactionQueue() {
+  public Queue<Transaction> getTransactionQueue() {
     return transactionQueue;
   }
 
@@ -42,9 +41,11 @@ public class Storage {
     transaction.setDestAccount(account);
     transaction.setStatus(Transaction.StatusEnum.ACTIVE);
     transaction.setAmount(account.getAmount());
-    transaction.setStartDate(OffsetDateTime.now());
     transaction.setOperationType(Transaction.OperationTypeEnum.INITIALINCOME);
-    transactionList.add(transaction);
+    synchronized (this.transactionQueue) {
+      transaction.setStartDate(OffsetDateTime.now());
+      transactionList.add(transaction);
+    }
     account.getTransactionList().add(transaction);
     this.transactionQueue.add(transaction);
     account.setAmount(BigDecimal.ZERO);
@@ -85,12 +86,14 @@ public class Storage {
     transaction.setDestAccount(destAcc);
     transaction.setStatus(Transaction.StatusEnum.ACTIVE);
     transaction.setAmount(transfer.getAmount());
-    transaction.setStartDate(OffsetDateTime.now());
     transaction.setOperationType(Transaction.OperationTypeEnum.TRANSFER);
     transactionList.add(transaction);
     sourceAcc.getTransactionList().add(transaction);
     destAcc.getTransactionList().add(transaction);
-    this.transactionQueue.add(transaction);
+    synchronized (this.transactionQueue) {
+      transaction.setStartDate(OffsetDateTime.now());
+      this.transactionQueue.add(transaction);
+    }
     return transaction;
   }
 

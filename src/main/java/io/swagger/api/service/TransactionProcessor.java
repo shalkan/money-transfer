@@ -1,7 +1,7 @@
 package io.swagger.api.service;
 
 import java.math.BigDecimal;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Queue;
 
 import io.swagger.model.Account;
 import io.swagger.model.Transaction;
@@ -16,9 +16,9 @@ import static io.swagger.model.Transaction.StatusEnum.FAILED;
 
 public class TransactionProcessor implements Runnable {
 
-  private ConcurrentLinkedQueue<Transaction> queue;
+  private Queue<Transaction> queue;
 
-  public TransactionProcessor(ConcurrentLinkedQueue<Transaction> queue) {
+  public TransactionProcessor(Queue<Transaction> queue) {
     this.queue = queue;
   }
 
